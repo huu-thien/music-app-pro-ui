@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Music App</title>
+    <link rel="shortcut icon" type="image/png" sizes="" href="./img/music-store-app.png">
+    <link rel="proconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" crossorigin="anonymous" onload="this.rel='stylesheet'">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <div class="music-card" >
+            <!-- Video -->
+            <video class="card-background" width="100%" height="100%" autoplay muted loop>
+                <source src="./img/background.mp4" type="video/mp4">
+            </video>
+            <!-- Header Card -->
+            <header class="header-card">
+                <span class="header-card__playlist">
+                    <i class="fa-solid fa-list-music icon-text-style"></i>
+                    <span class="tooltip">Show Playlist</span>
+                </span>
+                <h3 class="heading icon-text-style">My Music App</h3>
+                <span class="header-card__favorite">
+                    <i class="fa-regular fa-heart heart-icon icon-text-style" style="font-weight: normal;"></i>
+                    <span class="tooltip">Add Favorite</span>
+                </span>
+            </header>
+            <!-- CD Image -->
+            <section class="card-image">
+                <img src="./img/911.jpg" alt="" class="image-cd" draggable="false">
+            </section>
+            <!-- Song information -->
+             <section class="song-info">
+                <h3 class="name icon-text-style">Thien</h3>
+                <p class="author icon-text-style">Thien dep trai</p>
+             </section>
+             <!-- Progress bar -->
+             <section class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-bar__value"></div>
+                </div>
+                <div class="progress-time">
+                    <span class="progress-time__current icon-text-style">0:00</span>
+                    <span class="progress-time__duration icon-text-style">0:00</span>
+                </div>
+             </section>
+             <!-- Audio Section -->
+             <audio class="audio" src="./music/ConMuaNgangQua-SonTungMTP-2944936.mp3" preload="metadata"></audio>
+             <!-- Section control -->
+             <section class="controls-section">
+                <span class="btn btn-random">
+                    <i class="fa-solid fa-shuffle icon-text-style"></i>
+                </span>
+                <span class="btn btn-prev">
+                    <i class="fa-sharp fa-solid fa-backward-step icon-text-style"></i>
+                </span>
+                <span class="btn btn-play">
+                    <i class="fa-solid fa-circle-play icon-text-style btn-play-ing"></i>
+                    <i class="fa-solid fa-circle-pause icon-text-style btn-play-pause"></i>
+                </span>
+                <span class="btn btn-next">
+                    <i class="fa-solid fa-forward-step icon-text-style"></i>
+                </span>
+                <span class="btn btn-repeat">
+                    <i class="fa-solid fa-repeat icon-text-style btn-repeat-on "></i>
+                    <i class="fa-solid fa-repeat-1 icon-text-style btn-repeat-off hide"></i>
+                </span>
+             </section>
+             <!-- Sectione Volume -->
+             <section class="volume-section">
+                <span class="volume-control icon-text-style">
+                    <i class="fa-solid fa-volume volume-icon"></i>
+                    <i class="fa-solid fa-volume-xmark volume-icon__mute"></i>
+                </span>
+                <div class="change-volume">
+                    <div class="change-volume__bar">
+                        <div class="change-volume__value"></div>
+                    </div>
+                </div>
+             </section>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
