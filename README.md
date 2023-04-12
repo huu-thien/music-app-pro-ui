@@ -1,1 +1,1 @@
-https://huu-thien.github.io/music-app-pro-ui/-pro-ui
+https://huu-thien.github.io/music-app-pro-ui
