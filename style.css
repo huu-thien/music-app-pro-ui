@@ -202,6 +202,9 @@ video {
     cursor: pointer;
     padding: 5px 10px;
 }
+.btn-random.being-random i{
+    border-bottom: 3px solid rgb(201, 30, 152);
+}
 .btn-play {
     font-size: 4.2rem;
 }
@@ -214,7 +217,15 @@ video {
 .playing .btn-play-ing {
     display: none;
 }
-
+.btn-repeat .btn-repeat-on {
+    display: none;
+}
+.being-repeat .btn-repeat-on {
+    display: inline-block;
+}
+.being-repeat .btn-repeat-off {
+    display: none;
+}
 /* Volume Section */
 .volume-section {
     display: flex;
@@ -271,4 +282,95 @@ video {
 .change-volume:hover .change-volume__value::after {
     opacity: 1;
     visibility: visible;
+}
+
+
+/* Playlist-card */
+.playlist-card {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    transition: all 0.5s;
+    opacity: 0;
+    z-index: 1;
+    transform: translateY(50%);
+}
+.playlist-card.playlist-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+.playlist {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    border-radius: 10px;
+    padding: 18px 0;
+    overflow: hidden;
+    /* display: none; */
+}
+.playlist-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top right;
+    border-radius: 10px;
+    z-index: -1;
+}
+.playlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 0 20px;
+    font-size: 2.5rem;
+}
+.playlist-close {
+    padding: 6px 10px;
+    cursor: pointer;
+}
+.list-songs {
+    margin-top: 15px;
+    list-style: none;
+    overflow-y: hidden;
+    max-height: 480px;
+}
+.song-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 70px;
+    margin-bottom: 12px;
+    padding: 8px 20px;
+    overflow: hidden;
+    border-radius: 10px;
+    z-index: 1;
+}
+.song-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.playlist-song-info {
+    padding-left: 20px;
+    width: 50%;
+}
+.song-name {
+    font-size: 2rem;
+    padding-bottom: 12px;
+}
+.song-author {
+    font-size: 1.4rem;
+}
+.love {
+    padding-left: 100px;
 }

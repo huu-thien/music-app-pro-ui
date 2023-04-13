@@ -8,15 +8,25 @@
     <link rel="shortcut icon" type="image/png" sizes="" href="./img/music-store-app.png">
     <link rel="proconnect" href="https://cdn.jsdelivr.net">
     <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" crossorigin="anonymous" onload="this.rel='stylesheet'">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CGXFL56SHV"></script>
+    <script src="https://kit.fontawesome.com/9a816f9744.js" crossorigin="anonymous"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CGXFL56SHV');
+    </script>
 </head>
 <body>
     <div class="app">
+        <!-- Music Card -->
         <div class="music-card" >
-            <!-- <h1 class="title icon-text-style" style="padding-bottom: 10px;">I love you so muchhhhh</h1> -->
+            <h1 class="title icon-text-style" style="padding-bottom: 10px;">I love you so muchhhhh</h1>
             <!-- Video -->
             <video class="card-background" width="100%" height="100%" autoplay muted loop>
                 <source src="./img/background.mp4" type="video/mp4">
@@ -24,7 +34,8 @@
             <!-- Header Card -->
             <header class="header-card">
                 <span class="header-card__playlist">
-                    <i class="fa-solid fa-list-music icon-text-style"></i>
+                    <!-- <i class="fa-sharp fa-solid fa-list-music icon-text-style" ></i> -->
+                    <i class='bx bxs-playlist icon-text-style'></i>
                     <span class="tooltip">Show Playlist</span>
                 </span>
                 <h3 class="heading icon-text-style">My Music App</h3>
@@ -56,29 +67,29 @@
              <audio class="audio" src="./music/ConMuaNgangQua-SonTungMTP-2944936.mp3" preload="metadata"></audio>
              <!-- Section control -->
              <section class="controls-section">
-                <span class="btn btn-random">
-                    <i class="fa-solid fa-shuffle icon-text-style"></i>
+                <span class="btn btn-random icon-text-style">
+                    <i class="fa-solid fa-shuffle "></i>
                 </span>
-                <span class="btn btn-prev">
-                    <i class="fa-sharp fa-solid fa-backward-step icon-text-style"></i>
+                <span class="btn btn-prev icon-text-style">
+                    <i class="fa-sharp fa-solid fa-backward-step "></i>
                 </span>
-                <span class="btn btn-play">
-                    <i class="fa-solid fa-circle-play icon-text-style btn-play-ing"></i>
-                    <i class="fa-solid fa-circle-pause icon-text-style btn-play-pause"></i>
+                <span class="btn btn-play icon-text-style">
+                    <i class="fa-solid fa-circle-play  btn-play-ing"></i>
+                    <i class="fa-solid fa-circle-pause  btn-play-pause"></i>
                 </span>
-                <span class="btn btn-next">
-                    <i class="fa-solid fa-forward-step icon-text-style"></i>
+                <span class="btn btn-next icon-text-style">
+                    <i class="fa-solid fa-forward-step "></i>
                 </span>
-                <span class="btn btn-repeat">
-                    <i class="fa-solid fa-repeat icon-text-style btn-repeat-on "></i>
-                    <i class="fa-solid fa-repeat-1 icon-text-style btn-repeat-off hide"></i>
+                <span class="btn btn-repeat icon-text-style">
+                    <i class="fa-solid fa-repeat btn-repeat-off"></i>
+                    <i class="fa-solid fa-repeat-1 btn-repeat-on"></i>
                 </span>
              </section>
              <!-- Sectione Volume -->
              <section class="volume-section">
                 <span class="volume-control icon-text-style">
-                    <i class="fa-solid fa-volume volume-icon"></i>
-                    <i class="fa-solid fa-volume-xmark volume-icon__mute"></i>
+                    <i class="fa-solid fa-volume-high"></i>
+                    <!-- <i class="fa-solid fa-volume-xmark volume-icon__mute"></i> -->
                 </span>
                 <div class="change-volume">
                     <div class="change-volume__bar">
@@ -86,6 +97,21 @@
                     </div>
                 </div>
              </section>
+        </div>
+        <!-- Playlist Card -->
+        <div class="playlist-card">
+            <div class="playlist">
+                <video src="./img/background.mp4" class="playlist-background" autoplay muted loop></video>
+                <div class="playlist-header">
+                    <span class="playlist-title icon-text-style">My playlist</span>
+                    <span class="playlist-close">
+                        <i class="fa-solid fa-xmark icon-text-style"></i>
+                    </span>
+                </div>
+                <ul class="list-songs">
+                    
+                </ul>
+            </div>
         </div>
     </div>
     <script src="app.js"></script>
