@@ -251,9 +251,6 @@ video {
     justify-content: center;
     margin-top: 20px;
 }
-.volume-icon__mute {
-    display: none !important;
-}
 .volume-control {
     display: flex;
     align-items: center;
@@ -297,17 +294,17 @@ video {
     visibility: hidden;
     opacity: 0;
 }
+.volume__icon--mute {
+    display: none;
+    padding-left: 1.5px;
+}
 .volume-section.mute .volume__icon {
     display: none;
 }
 .volume-section.mute .volume__icon--mute {
     display: inline-block;
 }
-.volume__icon--mute {
-    display: none;
-    padding-left: 1.5px;
 
-}
 .change-volume:hover .change-volume__value::after {
     opacity: 1;
     visibility: visible;

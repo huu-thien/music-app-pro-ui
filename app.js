@@ -420,9 +420,10 @@ const app = {
         }
         // Khi giữ chuột, ProgressValue sẽ thay đổi theo vị trí mà chuột trỏ tới
         window.onmousemove = (e) => {
+            console.log(1);
             if(this.isHoldProgressBar) {
                 const rect = progressBar.getBoundingClientRect();
-                const percentProgress = parseFloat(((e.pageX - rect.left) / progressBar.offsetWidth) * 100);
+                let percentProgress = parseFloat(((e.pageX - rect.left) / progressBar.offsetWidth) * 100);
                 if(percentProgress >= 0 && percentProgress <= 100) {
                     progressBarValue.style.width = percentProgress + '%';
                 } else if (percentProgress < 1) {
@@ -468,10 +469,10 @@ const app = {
         volumeWrapper.onmousedown = (e) => {
             this.isHoldVolumeChange = true;
         };
-        window.onmousemove = (e) => {
+        window.addEventListener('mousemove', (e) =>{
             if (this.isHoldVolumeChange) {
                 const rect = volumeWrapper.getBoundingClientRect();
-                const percentVolume = parseFloat(((e.pageX - rect.left) / volumeWrapper.offsetWidth) * 100);
+                let percentVolume = parseFloat(((e.pageX - rect.left) / volumeWrapper.offsetWidth) * 100);
                 if (percentVolume >= 0 && percentVolume <= 100) {
                     volumeValue.style.width = `${percentVolume}%`;
                 } else if (percentVolume < 0) {
@@ -490,8 +491,8 @@ const app = {
                 }
                 myApp.classList.add("player-music--hover-volume");
             }
-        };
-        window.onmouseup = (e) => {
+        });
+        window.addEventListener('mouseup', (e) => {
             if (this.isHoldVolumeChange) {
                 this.isHoldVolumeChange = false;
                 const rect = volumeWrapper.getBoundingClientRect();
@@ -506,7 +507,7 @@ const app = {
                 audio.volume = percentVolume / 100;
                 myApp.classList.remove("player-music--hover-volume");
             }
-        };
+        });
         btnVolume.onclick = (e) => {
             this.isMute = !this.isMute;
             volumeChange.classList.toggle("mute");
