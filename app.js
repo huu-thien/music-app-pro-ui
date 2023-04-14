@@ -39,7 +39,14 @@ const progressBar = $(".progress-bar");
 const progressBarValue = $(".progress-bar__value");
 const progressSection = $(".progress-section");
 
-const songItems = document.querySelectorAll('.song-item');
+const songItems = $$('.song-item');
+
+
+const volumeChange = $(".volume-section");
+const btnVolume = $(".volume-control");
+const volumeWrapper = $(".change-volume");
+const volumeBar = $(".change-volume__bar");
+const volumeValue = $(".change-volume__value")
 
 const app = {
     previousIndex: 0,
@@ -47,7 +54,10 @@ const app = {
     isPlaying: false,
     isRandom: false,
     isReapeat: false,
+    currentVolume: 100,
     isHoldProgressBar: false,
+    isHoldVolumeChange: false,
+    isMuted: false,
     songs: [
         {
           name: "Attention",
@@ -454,6 +464,172 @@ const app = {
                 }
             }
         })
+        // Handle when change volunm
+        volumeWrapper.onmousedown = (e) => {
+            this.isHoldVolumeChange = true;
+        };
+        window.onmousemove = (e) => {
+            if (this.isHoldVolumeChange) {
+                const rect = volumeWrapper.getBoundingClientRect();
+                const percentVolume = parseFloat(((e.pageX - rect.left) / volumeWrapper.offsetWidth) * 100);
+                if (percentVolume >= 0 && percentVolume <= 100) {
+                    volumeValue.style.width = `${percentVolume}%`;
+                } else if (percentVolume < 0) {
+                    percentVolume = 0;
+                    volumeValue.style.width = `1%`;
+                } else if (percentVolume > 100) {
+                    percentVolume = 100;
+                    volumeValue.style.width = `99%`;
+                }
+                this.currentVolume = percentVolume;
+                audio.volume = percentVolume / 100;
+                if (audio.volume == 0) {
+                    this.isMute = true;
+                } else {
+                    this.isMute = false;
+                }
+                myApp.classList.add("player-music--hover-volume");
+            }
+        };
+        window.onmouseup = (e) => {
+            if (this.isHoldVolumeChange) {
+                this.isHoldVolumeChange = false;
+                const rect = volumeWrapper.getBoundingClientRect();
+                var percentVolume = parseFloat(((e.pageX - rect.left) / volumeWrapper.offsetWidth) * 100);
+                if (percentVolume < 0) {
+                    percentVolume = 0;
+                } else if (percentVolume > 100) {
+                    percentVolume = 100;
+                }
+                this.currentVolume = percentVolume;
+                volumeValue.style.width = `${this.currentVolume}%`;
+                audio.volume = percentVolume / 100;
+                myApp.classList.remove("player-music--hover-volume");
+            }
+        };
+        btnVolume.onclick = (e) => {
+            this.isMute = !this.isMute;
+            volumeChange.classList.toggle("mute");
+            if (this.isMute) {
+                audio.volume = 0;
+                volumeValue.style.width = `0%`;
+            } else {
+                volumeValue.style.width = `${this.currentVolume}%`;
+                audio.volume = this.currentVolume / 100;
+            }
+        }
+        audio.onvolumechange = (e) => {
+            if (this.isMute) {
+                volumeChange.classList.add("mute");
+            } else {
+                volumeChange.classList.remove("mute");
+            }
+        };
+        // Handle when user Press space and arrow keys
+        document.onkeydown = (e) => {
+            console.log(e.which) ;
+            switch(e.which) {
+                case 32:
+                    btnPlay.click();
+                    break;
+                case 39:
+                    audio.currentTime += 5;
+                    break;
+                case 37:
+                    audio.currentTime -= 5;
+                    break;
+            }
+        }
+
+        // Handle in Mobile
+        // When touch don't hold mouse
+        progressSection.addEventListener("touchstart", (e) => {
+            this.isHoldProgressBar = true;
+        });
+        // When touch move, progressValue will change according to the position that the mouse points to
+        window.addEventListener("touchmove", (e) => {
+            if (_this.isHoldProgressBar) {
+                const rect = progressBar.getBoundingClientRect();
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    const percentProgress = parseFloat(
+                        ((e.changedTouches[i].pageX - rect.left) / progressBar.offsetWidth) * 100
+                    );
+
+                    if (percentProgress >= 0 && percentProgress <= 100) {
+                        progressBarValue.style.width = `${percentProgress}%`;
+                    } else if (percentProgress < 0) {
+                        progressBarValue.style.width = `1%`;
+                    } else if (percentProgress > 100) {
+                        progressBarValue.style.width = `99%`;
+                    }
+                }
+            }
+        });
+        // When you release touch, the time Current will be changed
+        window.addEventListener("touchend", (e) => {
+            if (_this.isHoldProgressBar) {
+                _this.isHoldProgressBar = false;
+                const rect = progressBar.getBoundingClientRect();
+
+                let percentProgress = parseFloat(
+                    ((e.changedTouches[0].pageX - rect.left) / progressBar.offsetWidth) * 100
+                );
+                if (percentProgress < 0) {
+                    percentProgress = 0;
+                }
+                if (percentProgress > 100) {
+                    percentProgress = 100;
+                }
+                audio.currentTime = (percentProgress / 100) * audio.duration;
+            }
+        });
+        // Handle when touch change volume
+        volumeWrapper.ontouchstart = (e) => {
+            this.isHoldVolumeChange = true;
+        };
+        window.ontouchmove = (e) => {
+            if (this.isHoldVolumeChange) {
+                const rect = volumeWrapper.getBoundingClientRect();
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    var percentVolume = parseFloat(
+                        ((e.changedTouches[i].pageX - rect.left) / volumeWrapper.offsetWidth) * 100
+                    );
+                    if (percentVolume >= 0 && percentVolume <= 100) {
+                        volumeValue.style.width = `${percentVolume}%`;
+                    } else if (percentVolume < 0) {
+                        percentVolume = 0;
+                        volumeValue.style.width = `1%`;
+                    } else if (percentVolume > 100) {
+                        percentVolume = 100;
+                        volumeValue.style.width = `99%`;
+                    }
+                    this.currentVolume = percentVolume;
+                    audio.volume = percentVolume / 100;
+                    if (audio.volume == 0) {
+                        this.isMute = true;
+                    } else {
+                        this.isMute = false;
+                    }
+                }
+            }
+        };
+        window.ontouchend = (e) => {
+            if (this.isHoldVolumeChange) {
+                this.isHoldVolumeChange = false;
+                const rect = volumeWrapper.getBoundingClientRect();
+                var percentVolume = parseFloat(
+                    ((e.changedTouches[0].pageX - rect.left) / volumeWrapper.offsetWidth) * 100
+                );
+                if (percentVolume < 0) {
+                    percentVolume = 0;
+                } else if (percentVolume > 100) {
+                    percentVolume = 100;
+                }
+                this.currentVolume = percentVolume;
+                volumeValue.style.width = `${this.currentVolume}%`;
+                audio.volume = percentVolume / 100;
+            }
+        };
         
     },
 
