@@ -1,11 +1,11 @@
 /** 0. Load time -> OK
  * 1. Show / Hide Playlist -> OK
  * 2. Render  -> OK
- * 3. Play / Pause / Seek
+ * 3. Play / Pause / Seek -> OK
  * 4. CD rotate ->OK
  * 5. Next / Previous -> OK
- * 6. Random
- * 7. Next / Repeat when ended
+ * 6. Random -> OK
+ * 7. Next / Repeat when ended -> OK
  * 8. Active song
  * 9. Scroll active song into
  * 10. Play song when click
@@ -16,6 +16,7 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+const myApp = $('.app')
 const btnPlayList = $(".header-card__playlist");
 const playlistCard = $(".playlist-card");
 const btnClosePlaylist = $(".playlist-close");
@@ -32,12 +33,21 @@ const btnNext = $(".btn-next");
 const btnPrev = $(".btn-prev");
 const btnRandom = $(".btn-random");
 const btnRepeat = $(".btn-repeat");
+const btnAddFavorite = $(".header-card__favorite");
+
+const progressBar = $(".progress-bar");
+const progressBarValue = $(".progress-bar__value");
+const progressSection = $(".progress-section");
+
+const songItems = document.querySelectorAll('.song-item');
 
 const app = {
+    previousIndex: 0,
     currentIndex: 0,
     isPlaying: false,
     isRandom: false,
     isReapeat: false,
+    isHoldProgressBar: false,
     songs: [
         {
           name: "Attention",
@@ -214,6 +224,15 @@ const app = {
                     <h3 class="song-name icon-text-style">${song.name}</h3>
                     <p class="song-author icon-text-style">${song.author}</p>
                 </div>
+                <div class='waves-loading'>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                </div>
                 <span class="love icon-text-style">
                     <i class="fa-solid fa-heart"></i>
                 </span>
@@ -233,27 +252,32 @@ const app = {
         imageCD.src = this.songs[this.currentIndex].image;
         name.textContent = this.songs[this.currentIndex].name;
         author.textContent = this.songs[this.currentIndex].author;
+        progressBarValue.style.width = 0;
     },
     secondsToMinutes(time) {
         var minutes = Math.floor(time / 60);
         var seconds = time - minutes * 60;
         var formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
         return formattedTime;
+        
     },
     nextSong() {
+        this.previousIndex = this.currentIndex;
         this.currentIndex++;
         if(this.currentIndex > this.songs.length - 1) {
             this.currentIndex = 0;   
         }
         this.loadCurrentSong();
-        
+        this.activeSong();
     },
     prevSong() {
+        this.previousIndex = this.currentIndex;
         this.currentIndex--;
         if(this.currentIndex < 0) {
             this.currentIndex = this.songs.length - 1;   
         }
         this.loadCurrentSong();
+        this.activeSong();
     },
     randomSongs() {
         let newIndex;
@@ -266,15 +290,33 @@ const app = {
     repeatSong() {
         this.loadCurrentSong(this.currentIndex);
     },
+    activeSong() {
+        const songItems = $$('.song-item');
+        const songActive = songItems[this.currentIndex];
+        songActive.classList.add('active');
+        this.scrollToActiveSong(songActive);
+        songItems[this.previousIndex].classList.remove('active');
+    },
+    scrollToActiveSong(songActive) {
+        songActive.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    },
     
     handlerEvents() {
         const _this = this;
+        const songItems = $$('.song-item');
+        songItems[this.currentIndex].classList.add('active');
         // CD rotate
         const imageCdRotate = imageCD.animate([
             {transform: 'rotate(360deg'}
         ], {duration: 10000, iterations: Infinity})
         imageCdRotate.pause();
-
+        // Add favorite
+        btnAddFavorite.onclick = () => {
+            btnAddFavorite.classList.toggle('being-favorite')
+        }
         // Show/hide playlist when click icon
         btnPlayList.onclick = () => {
           playlistCard.classList.add("playlist-open");
@@ -305,11 +347,6 @@ const app = {
         audio.onended = () => {
             
         }
-        // Load current time and duration of audio
-        audio.ontimeupdate = () => {
-            const currentTime = Math.floor(audio.currentTime);
-            $('.progress-time__current').textContent = this.secondsToMinutes(currentTime);    
-        }
         audio.onloadedmetadata = () => {
             const duration = Math.floor(audio.duration);
             if(duration) {$('.progress-time__duration').textContent = this.secondsToMinutes(duration);}
@@ -321,7 +358,7 @@ const app = {
                 console.log(this.currentIndex);
             } else {
                 this.nextSong();
-                console.log(this.currentIndex);
+                // console.log(this.currentIndex);
             }
             audio.play();
         }
@@ -332,28 +369,92 @@ const app = {
         }
         // Click nút ranđom 
         btnRandom.onclick = () => {
+            btnRepeat.classList.remove('being-repeat');
+            this.isReapeat = false;
+
             this.isRandom = !this.isRandom;
             btnRandom.classList.toggle("being-random");
-            btnRepeat.classList.remove('being-repeat')
+
+            
         }
-        // click repeat btn
+        // click repeat btn -> turn off random
         btnRepeat.onclick = () => {
+            btnRandom.classList.remove("being-random");
+            this.isRandom = false;
+
             this.isReapeat = !this.isReapeat;
-            console.log(this.isReapeat);
             btnRepeat.classList.toggle("being-repeat");
-            btnRandom.classList.remove('being-random')
         }
         // Khi ket thuc bai hat
         audio.onended = () => {
-            if(isReapeat) {
+            if(this.isReapeat) {
                 this.loadCurrentSong();
-            } else if(isRandom) {
+            } else if(this.isRandom) {
                 this.randomSongs();
             } else {
                 this.nextSong();
             }
             audio.play();
         }
+        // Load current time 
+        audio.ontimeupdate = () => {
+            $('.progress-time__current').textContent = this.secondsToMinutes(Math.floor(audio.currentTime));    
+            if(this.isHoldProgressBar == false) {
+                const percentProgress = (audio.currentTime / audio.duration) * 100;
+                progressBarValue.style.width = percentProgress + '%';
+            }
+        }
+        // Khi click để thay đổi tiến độ bài hát
+        progressSection.onmousedown = (e) => {
+            this.isHoldProgressBar = true;
+        }
+        // Khi giữ chuột, ProgressValue sẽ thay đổi theo vị trí mà chuột trỏ tới
+        window.onmousemove = (e) => {
+            if(this.isHoldProgressBar) {
+                const rect = progressBar.getBoundingClientRect();
+                const percentProgress = parseFloat(((e.pageX - rect.left) / progressBar.offsetWidth) * 100);
+                if(percentProgress >= 0 && percentProgress <= 100) {
+                    progressBarValue.style.width = percentProgress + '%';
+                } else if (percentProgress < 1) {
+                    progressBarValue.style.width = '1%'
+                } else if (percentProgress > 100) {
+                    progressBarValue.style.width = '99%'                   
+                }
+                myApp.classList.add('player-music--hover-progress')
+            }
+        }
+        // Khi thả chuột thì thời gian bài hát thay đổi
+        window.onmouseup = (e) => {
+            if(this.isHoldProgressBar) {
+                this.isHoldProgressBar = false;
+                const rect = progressBar.getBoundingClientRect();
+
+                let percentProgress = parseFloat(((e.pageX - rect.left) / progressBar.offsetWidth) * 100);
+                if(percentProgress < 0) {
+                    percentProgress = 0;
+                }
+                if (percentProgress > 100) {
+                    percentProgress = 100;
+                }
+                audio.currentTime = (percentProgress / 100) * audio.duration;
+                myApp.classList.remove('player-music--hover-progress')
+            }
+        }
+        // Actice song in playlist
+        songItems.forEach((song, index) => {
+            song.onclick = (e) => {
+                // Khi chọn bài hiện tại thì không ăn sự kiện
+                if(this.currentIndex != index) {
+                    this.previousIndex = this.currentIndex;
+                    this.currentIndex = index;
+                    this.loadCurrentSong();
+
+                    this.activeSong();
+                    audio.play();
+                }
+            }
+        })
+        
     },
 
     
