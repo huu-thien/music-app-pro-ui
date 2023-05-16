@@ -60,6 +60,12 @@ const app = {
     isMuted: false,
     songs: [
         {
+            name: "Sau những lần đau",
+            author: "REMAKE | fhung. x Dũng",
+            image: "./img/saunhunglandau.jpg",
+            path: "./music/SauNhungLanDau.mp3",
+          },
+        {
           name: "Attention",
           author: "Charlie Puth",
           image: "./img/CharliePuth.jpg",
